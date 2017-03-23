@@ -1,0 +1,71 @@
+.login-panel {
+    width:300px;
+    max-width:300px;
+    height:380px;
+    background-color:#fff;
+    position:absolute;
+    margin:auto;
+    top:0;
+    left:0;
+    right:0;
+    bottom:0;
+    border-radius: 2px;
+    border: 1px solid #292929;
+}
+
+.container {
+    text-align: center;
+    width: 100vw;
+    height: 100vh;
+}
+
+body {
+    background: whitesmoke;
+}
+
+.login-panel .title {
+    padding-top: 24px;
+    padding-bottom: 24px;
+    background: #292929;
+
+    color: #fff;
+    font-size: 20px;
+}
+
+.login-panel .contents {
+    padding: 16px;
+}
+
+.title p {
+    display: inline;
+}
+
+.title p>strong {
+    margin-right: 10px;
+}
+
+.title a {
+    color: #fff;
+    text-decoration: none;
+}
+
+.contents label {
+    position: relative;
+    float: left;
+}
+
+.contents .button-primary {
+    width: 100% !important;
+    margin-top: 16px;
+    margin-bottom: 6px;
+}
+
+.contents .forget {
+    font-size: 11px;
+}
+
+@media (max-width: 720px) {
+    .login-panel {
+        width: 85%;
+    }
+}

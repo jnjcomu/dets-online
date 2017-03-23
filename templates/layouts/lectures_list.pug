@@ -1,0 +1,22 @@
+extends ../index.pug
+
+block contents
+    .container
+        h3 강의 목록
+        form
+            table.u-full-width
+                thead
+                    tr
+                        th 강의명
+                        th 강사명
+                        th 주제
+                        th 설명
+                tbody
+                    each lecture in lectures
+                        tr(onclick="location.href='/lectures/#{lecture.id}';")
+                            td= lecture.name
+                            td= lecture.teacher
+                            td= lecture.topic
+                            td= lecture.description
+
+

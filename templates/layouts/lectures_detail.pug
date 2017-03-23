@@ -1,0 +1,15 @@
+extends ../index.pug
+
+block contents
+    .container.lecture
+        .profile
+            img.profile-img(src="#{lecture.teacher_image}")
+            .info
+                h4= lecture.teacher_name
+                p= lecture.teacher_info
+        hr
+        h3 #{lecture.name}
+        h6.contradiction (#{lecture.now}명 / #{lecture.max}명) 모집
+        p.description= lecture.description
+        hr
+        a.button.button-primary(href="/request/lecture/#{lecture.id}" style="float: right;") 신청하기

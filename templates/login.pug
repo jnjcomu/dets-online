@@ -1,0 +1,29 @@
+doctype html
+html(lang='en')
+    head
+        title Login
+        meta(name='viewport', content='width=device-width, initial-scale=1')
+        link(href='//fonts.googleapis.com/css?family=Raleway:400,300,600', rel='stylesheet', type='text/css')
+        link(rel='stylesheet', href='/stylesheets/normalize.css')
+        link(rel='stylesheet', href='/stylesheets/login-skin.css')
+        link(rel='stylesheet', href='/stylesheets/skeleton.css')
+        link(rel='icon', type='image/png', href='images/favicon.png')
+    body
+        .container
+            .login-panel
+                .title
+                    a(href='/')
+                        p 
+                            strong DETS
+                        | LOGIN
+
+                .contents
+                    form(method='post' action='/login')
+                        label(for='exampleEmailInput') DIMIGOIN ID
+                        input#exampleEmailInput.u-full-width(type='text', placeholder='' name='id')
+
+                        label(for='exampleEmailInput') DIMIGOIN PASSWORD
+                        input#exampleEmailInput.u-full-width(type='password', placeholder='' name='password')
+
+                        input.button-primary(type='submit', value='로그인')
+                        p.forget 비밀번호를 잊으셨다면 디미고인으로

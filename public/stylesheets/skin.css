@@ -1,0 +1,246 @@
+body>.container {
+  padding-top: 100px;
+  max-width: 960px;
+  width: 80%;
+}
+
+nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+
+.navbar {
+  display: block;
+  width: 100%;
+  height: 6.5rem;
+  background: #fff;
+  z-index: 980;
+  border-top: 1px solid #eee;
+  border-bottom: 1px solid #eee;
+}
+
+.navbar.side {
+  top: 0;
+}
+
+.header {
+  margin-top: 12rem;
+  margin-bottom: 12rem;
+  text-align: center;
+}
+
+.navbar>.container {
+  max-width: 960px;
+  width: 80%;
+}
+
+.navbar-list {
+  list-style: none;
+  margin-bottom: 0;
+}
+
+.navbar-list.mobile li {
+  border-bottom: 1px solid #eee;
+}
+
+.navbar-list.mobile li a {
+  margin: 0px; display: block; width: 100%; height: 100%;
+}
+
+.navbar-list.mobile a {
+  padding-left: 16px;
+}
+
+.navbar-list.mobile li:hover {
+  background: whitesmoke;
+  cursor: pointer;
+}
+
+.navbar-list.mobile li {
+  margin-bottom: 0;
+}
+
+.navbar-item {
+  position: relative;
+  float: right;
+  margin-bottom: 0;
+}
+
+.navbar-item.left {
+  float: left;
+}
+
+.navbar-item.title>a {
+  font-size: 13px !important;
+  color: #000 !important;
+}
+
+.navbar-link {
+  text-transform: uppercase;
+  font-size: 11px;
+  font-weight: 600;
+  margin-right: 10px;
+  margin-left: 10px;
+  letter-spacing: .2rem;
+  text-decoration: none;
+  line-height: 6.5rem;
+  color: #222;
+}
+
+.navbar-link.user {
+  color: #888 !important;
+}
+
+.navbar-link.active {
+  color: #33C3F0;
+}
+
+.blank {
+  width: 32px;
+}
+
+.nav-toggle {
+  display: none;
+}
+
+.description {
+  margin-top: 128px;
+  margin-bottom: 128px;
+}
+
+.value-img {
+  display: block;
+  text-align: center;
+  margin: 2.5rem auto 0;
+}
+
+td>button {
+  margin: 0;
+  position: relative;
+  float: right;
+}
+
+#asidenav .closebtn {
+  display: block;
+}
+
+tbody>tr:hover {
+  background: whitesmoke;
+  cursor: pointer;
+}
+
+.form {
+  margin-top: 56px;
+}
+
+table td {
+  white-space: nowrap;
+  overflow: hidden;
+  max-width: 200px;
+  text-overflow: ellipsis;
+}
+
+#asidenav {
+  height: 100%;
+  width: 0;
+  position: fixed;
+  z-index: 10021;
+  top: 0;
+  right: 0;
+  background-color: #fff;
+  overflow-x: hidden;
+  transition: 0.5s;
+}
+
+#asidenav_back {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 10020;
+  background: rgba(0,0,0,0);
+  height: 100vh;
+  width: 0;
+}
+
+.lecture h3,h6 {
+  display: inline;
+}
+
+.lecture h6.contradiction {
+  margin: 8px;
+}
+
+.lecture .description {
+  margin-top: 16px;
+}
+
+.lecture img.profile-img {
+  border-radius: 50%;
+  float: left;
+  width: 64px;
+  height: 64px;
+}
+
+.lecture>.profile .info {
+  margin-left: 72px;
+}
+
+.lecture>.profile .info>h4 {
+  margin: 0px !important;
+}
+
+.lecture>.profile {
+  display: block;
+}
+
+@media screen and (max-height: 450px) {
+  .sidenav {
+    padding-top: 15px;
+  }
+  .sidenav a {
+    font-size: 18px;
+  }
+}
+
+@media (max-width: 720px) {
+  body>.container {
+    width: 100%;
+    padding-left: 16px;
+    padding-right: 16px;
+    padding-top: 9rem;
+  }
+  .navbar-item {
+    display: none;
+  }
+  .navbar-item.title {
+    display: block;
+  }
+  .navbar>.container {
+    width: 100%;
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+  .header {
+    margin-top: 32px;
+    margin-bottom: 32px;
+  }
+  .header>h2 {
+    margin-top: 128px;
+  }
+  .nav-toggle {
+    display: block;
+  }
+  .description {
+    margin-top: 32px;
+    margin-bottom: 32px;
+  }
+  table td {
+    max-width: 80px;
+  }
+
+  .lecture img.profile-img {
+    width: 56px;
+    height: 56px;
+  }
+}

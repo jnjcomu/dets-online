@@ -1,0 +1,47 @@
+nav.navbar
+    .container
+        ul.navbar-list
+            li.navbar-item.left.title
+                a.navbar-link(href='/') Det's 신청 관리 시스템
+            li.navbar-item.left
+                a.navbar-link(href='/' class=(isset($intro) == true) ? 'active' : 'deactive') 소개
+            li.navbar-item.left
+                a.navbar-link(href='/lectures' class=(isset($lectures_l) == true) ? 'active' : 'deactive') 강의 목록
+            li.navbar-item.left
+                a.navbar-link(href='/teachers/request' class=(isset($teachers_r) == true) ? 'active' : 'deactive') 강사 신청
+            li.navbar-item.nav-toggle
+                a.navbar-link(href='#intro' onclick='openNav()') 더보기
+            if isset($username) && !empty($username)
+                li.navbar-item
+                    a.navbar-link(href='/logout')
+                        button 로그아웃
+                li.navbar-item
+                    p.navbar-link.user #{username}님 환영합니다
+            else
+                li.navbar-item
+                    a.navbar-link(href='/login')
+                        button 로그인
+
+#asidenav_back
+    #asidenav
+        .navbar.side
+            .container
+                ul.navbar-list
+                    li.navbar-item.closebtn
+                        a.navbar-link(onclick="closeNav()" href="#") 닫기
+        ul.navbar-list.mobile
+            if isset($username) && !empty($username)
+                li
+                    a.navbar-link.user #{username}님 환영합니다
+            li
+                a.navbar-link(href='/' class=(isset($intro) == true) ? 'active' : 'deactive') 소개
+            li
+                a.navbar-link(href='/lectures' class=(isset($lectures_l) == true) ? 'active' : 'deactive') 강의 목록
+            li
+                a.navbar-link(href='/teachers/request' class=(isset($teachers_r) == true) ? 'active' : 'deactive') 강사 신청
+            if isset($username) && !empty($username)
+                li
+                    a.navbar-link(href='/logout') 로그아웃
+            else
+                li
+                    a.navbar-link(href='/login') 로그인

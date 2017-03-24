@@ -2,7 +2,7 @@
 
 ## Requirement
 
-- settings.php
+- src/settings.php
 
 ### settings.php - example
 ```php
@@ -36,10 +36,23 @@
           // Dimigo API
           'dimiapi' => [
               // If you want publish this application, you can use https://api.dimigo.hs.kr that be used product service.
-              'host' => 'https://api.dimigo.org', 
+              'host' => 'http://api.dimigo.org', 
               'api_id' => 'dimigoid_password',
               'api_pw' => 'dimigoapi_password',
           ],
       ],
   ];
 ```
+
+## Dimigo API Host
+> In the `settings.php` example above, I wrote to use `https://api.dimigo.org` in dimiapi host.
+
+But you can use other address. So, Here are some other address :
+
+### Testing / Development
+- `http://api.dimigo.org` - Used when `testing` and `development`
+
+### Publishing
+- `http://api.dimigo.hs.kr` - Used CloudFlare. But it doesn't use ssl.
+- `https://api.dimigo.hs.kr` - Used CloudFlare and ssl. I recommended to use.
+- `http://dapi.dimigo.hs.kr`- Do not use anything. Even CloudFlare.

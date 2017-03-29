@@ -8,6 +8,8 @@ nav.navbar
             li.navbar-item.left
                 a.navbar-link(href='/lectures' class=(isset($lectures_l) == true) ? 'active' : 'deactive') 강의 목록
             li.navbar-item.left
+                a.navbar-link(href='/my/lectures' class=(isset($lectures_my) == true) ? 'active' : 'deactive') 신청한 강좌
+            li.navbar-item.left
                 a.navbar-link(href='/teachers/request' class=(isset($teachers_r) == true) ? 'active' : 'deactive') 강사 신청
             li.navbar-item.nav-toggle
                 a.navbar-link(href='#intro' onclick='openNav()') 더보기
@@ -37,6 +39,8 @@ nav.navbar
                 a.navbar-link(href='/' class=(isset($intro) == true) ? 'active' : 'deactive') 소개
             li
                 a.navbar-link(href='/lectures' class=(isset($lectures_l) == true) ? 'active' : 'deactive') 강의 목록
+            li
+                a.navbar-link(href='/my/lectures' class=(isset($lectures_my) == true) ? 'active' : 'deactive') 신청한 강좌
             li
                 a.navbar-link(href='/teachers/request' class=(isset($teachers_r) == true) ? 'active' : 'deactive') 강사 신청
             if isset($username) && !empty($username)

@@ -1,7 +1,9 @@
 /vendor/
 /logs
-!/logs/README.md
 /src/settings.php
 /cache
 .DS_Store
 .keep
+*.iml
+.idea
+composer.phar

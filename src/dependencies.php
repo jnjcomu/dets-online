@@ -10,6 +10,26 @@ $container['renderer'] = function ($c) {
     return new Slim\Views\PhpRenderer($settings['template_path']);
 };
 
+// view renderer
+$container['server'] = function ($c) {
+    $settings = $c->get('settings')['renderer'];
+    
+    return new Slim\Views\PhpRenderer($settings['template_path']);
+};
+
+$container['util'] = function ($c) {
+    return new class() {
+        public function add_option(&$options) {
+            if(!isset($_SESSION['userdata'])) return;
+
+            $userdata = $_SESSION['userdata'];
+            if(isset($userdata['username']) && !empty($userdata['username'])) {
+                $options['username'] = $userdata['realname'];
+            }
+        }
+    };
+};
+
 // monolog
 $container['logger'] = function ($c) {
     $settings = $c->get('settings')['logger'];
@@ -23,7 +43,7 @@ $container['logger'] = function ($c) {
 $container['medoo'] = function ($c) {
     $settings = $c->get('settings')['medoo'];
 
-    $database = new Medoo($settings);
+    $database = new \Medoo\Medoo($settings);
     return $database;
 };
 
@@ -79,6 +99,39 @@ $container['dimigo'] = function ($c) {
             $curl->setBasicAuthentication($id, $pw);
 
             return $curl;
+        }
+
+        public function fetch_student_info($container, $username, $callback) {
+            // Check callback has methods
+            $has_methods = 
+                method_exists($callback, 'onSuccess') && 
+                method_exists($callback, 'onFailed');
+            
+            // methods check
+            if(!$has_methods) {
+                return 'callback doesn\'t has callback methods';
+            } else {
+                $callback->container = $container;
+            }
+
+            $check_username = isset($username) && empty($username);
+            if($check_username) {
+                $callback->onFailed('0', 'NO INFO', 'Does not have info that used login.');
+
+                return 'user info is blink';
+            }
+
+            $curl = $this->curl_ready();
+
+            $curl->get('http://api.dimigo.org/v1/user-students/' . $username);
+
+            $res = $curl->response;
+            if(property_exists($res, 'user_id'))
+                $callback->onSuccess($res);
+            else
+                $callback->onFailed($res->status, $res->name, $res->message);
+
+            return $res;
         }
 
         public function user_exist($container, $user_id, $user_password, $callback) {

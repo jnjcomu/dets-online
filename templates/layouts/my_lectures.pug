@@ -2,8 +2,8 @@ extends ../index.pug
 
 block contents
     .container
-        h3 강의 목록
-        p 각 강의를 눌러서 신청할 수 있습니다. 최대 신청할 수 있는 강의는 4개까지 입니다.
+        h3 내 강의 목록
+        p 각 강의를 눌러서 취소할 수 있습니다.
         form
             table.u-full-width
                 thead
@@ -14,7 +14,7 @@ block contents
                         th 설명
                 tbody
                     each lecture in lectures
-                        tr(onclick="location.href='/lectures/#{lecture.idx}';")
+                        tr(onclick="confirm('진짜 취소할꺼에요?');")
                             td= lecture.name
                             td= lecture.teacher_name
                             td= lecture.topic

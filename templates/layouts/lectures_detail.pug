@@ -12,4 +12,8 @@ block contents
         h6.contradiction (#{lecture.now}명 / #{lecture.max}명) 모집
         p.description= lecture.description
         hr
-        a.button.button-primary(href="/request/lecture/#{lecture.id}" style="float: right;") 신청하기
+        form(method="post")
+            if already
+                input.button-danger(type="submit" style="float: right;" value='신청취소')
+            else
+                input.button-primary(type="submit" style="float: right;" value='신청하기')

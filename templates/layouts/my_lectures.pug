@@ -2,22 +2,23 @@ extends ../index.pug
 
 block contents
     .container
-        h3 내 강의 목록
-        p 각 강의를 눌러서 취소할 수 있습니다.
-        form
-            table.u-full-width
-                thead
-                    tr
-                        th 강의명
-                        th 강사명
-                        th 주제
-                        th 설명
-                tbody
-                    each lecture in lectures
-                        tr(onclick="confirm('진짜 취소할꺼에요?');")
-                            td= lecture.name
-                            td= lecture.teacher_name
-                            td= lecture.topic
-                            td= lecture.description
+        h3 신청 강의 목록
+        p 각 강의를 눌러서 취소할 수 있습니다
+        #inform
+        table.u-full-width
+            thead
+                tr
+                    th 강의명
+                    th 강사명
+                    th 주제
+                    th 설명
+            tbody
+                each lecture in lectures
+                    tr.item(data-lectureid='#{lecture.lecture_idx}')
+                        td= lecture.name
+                        td= lecture.teacher_name
+                        td= lecture.topic
+                        td= lecture.description
 
-
+    script(src='https://code.jquery.com/jquery-3.2.1.min.js', integrity='sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=', crossorigin='anonymous')
+    script(src='/javascripts/site.js')

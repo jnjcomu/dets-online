@@ -12,7 +12,8 @@ block contents
         h6.contradiction (#{lecture.now}명 / #{lecture.max}명) 모집
         p.description= lecture.description
         hr
-        form(method="post")
+        form(method='post' action=($already) ? '/remove/lecture' : '/lecture')
+            input(type="hidden" value="#{lecture.idx}" name="lecture_id")
             if already
                 input.button-danger(type="submit" style="float: right;" value='신청취소')
             else

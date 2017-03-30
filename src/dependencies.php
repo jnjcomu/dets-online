@@ -77,6 +77,15 @@ $container['location'] = function ($c) {
 
             return $go_home;
         }
+
+        public function go($url = '/', $message = 'default message') {
+            $go_home = "<script>
+                alert(\"$message\");
+                window.onload = function() { location.href='$url' }
+            </script>";
+
+            return $go_home;
+        }
     };
 
     return $location;

@@ -27,6 +27,8 @@ $app->any('/lectures', function ($request, $response, $args) {
     return $this->pug->render(__DIR__ . '/../../templates/layouts/lectures_list.pug', $options);
 });
 
+
+
 $app->get('/lectures/[{lecture}]', function ($request, $response, $args) {
     $options = [
         'lectures_l' => true,
@@ -34,14 +36,29 @@ $app->get('/lectures/[{lecture}]', function ($request, $response, $args) {
     ];
 
     $lecture = $this->medoo->select('lectures', '*', ['idx' => $args['lecture']])[0];
+    $student_num = count($this->medoo->select('students', '*', ['lecture_idx' => $lecture['idx']]));
+
+    if(isset($_SESSION['userdata'])) {
+        $is_num = count($this->medoo->select('students', '*', [
+            'AND' => [
+                'lecture_idx' => $lecture['idx'],
+                'student_name' => $_SESSION['userdata']['realname'],
+                'serial' => $_SESSION['userdata']['serial']
+            ]
+        ]));
+
+        if($is_num > 0) $options['already'] = true;
+    }
+
     $options['title'] = '디미고 Dets 신청 시스템 :: ' . $lecture['name'];
     $serial = $lecture['teacher_code'];
     $options['lecture'] = [
+        'idx' => $lecture['idx'],
         'name' => $lecture['name'],
         'teacher_name' => $lecture['teacher_name'],
         'teacher_info' => $serial[1] . '반 ' . substr($serial, 2) . '번',
         'description' => $lecture['description'],
-        'now' => '0',
+        'now' => $student_num,
         'max' => $lecture['maximum'],
         'teacher_image' => 'https://api.dimigo.hs.kr/user_photo/' . $lecture['teacher_picurl'],
     ];
@@ -52,10 +69,12 @@ $app->get('/lectures/[{lecture}]', function ($request, $response, $args) {
     return $this->pug->render(__DIR__ . '/../../templates/layouts/lectures_detail.pug', $options);
 });
 
-$app->post('/lectures/[{lecture}]', function ($request, $response, $args) {
+
+
+$app->post('/lecture', function ($request, $response, $args) {
 
     // 유효한 강좌인치 체크
-    $lecture_id = $args['lecture'];
+    $lecture_id = $request->getParsedBody()['lecture_id'];
     $lecture = $this->medoo->select('lectures', '*', ['idx' => $lecture_id])[0];
     if (!is_numeric($lecture_id) || empty($lecture)) {
         $response_message = $this->location->back('정상적인 강좌 아이디가 아닙니다.');
@@ -85,9 +104,30 @@ $app->post('/lectures/[{lecture}]', function ($request, $response, $args) {
         'serial' => $_SESSION['userdata']['serial'],
     ]);
 
-    $response_message = $this->location->back('신청이 완료되었습니다.');
+    $response_message = $this->location->go('/lectures/' . $lecture_id, '신청이 완료되었습니다.');
     return $response_message;
 })->add($login_check);
+
+
+$app->post('/remove/lecture', function ($request, $response, $args) {
+    $lecture_id = $request->getParsedBody()['lecture_id'];
+    $lecture = $this->medoo->select('lectures', '*', ['idx' => $lecture_id])[0];
+    if (!is_numeric($lecture_id) || empty($lecture)) {
+        $response_message = $this->location->back('정상적인 강좌 아이디가 아닙니다.');
+        return $response_message;
+    }
+
+    $this->medoo->delete('students', [
+        'AND' => [
+            'lecture_idx' => $lecture_id,
+            'student_name' => $_SESSION['userdata']['realname'],
+            'serial' => $_SESSION['userdata']['serial']
+        ]
+    ]);
+
+    $response_message = $this->location->go('/lectures/' . $lecture_id, '신청취소가 완료되었습니다.');
+    return $response_message;
+});
 
 /**
  * 내가 신청한 강좌 보기
@@ -111,7 +151,7 @@ $app->get('/my/lectures', function ($request, $response, $args) {
         [
             'students.idx', 'lectures.name',
             'lectures.teacher_name', 'lectures.description',
-            'lectures.topic'
+            'lectures.topic', 'students.lecture_idx'
         ],
         [
             'AND' => [

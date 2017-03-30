@@ -10,7 +10,8 @@ $app->get('/login', function ($request, $response, $args) {
 
 $app->get('/debug', function ($request, $response, $args) {
     var_dump($_SESSION);
-
+    var_dump($request->getUri());
+    var_dump($_SERVER);
     return $response;
 });
 

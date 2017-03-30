@@ -53,7 +53,7 @@ $container['pug'] = function ($c) {
         'prettyprint' => true,
         'extension' => '.pug',
         'basedir' => __DIR__ . '/templates',
-        'cache' => 'cache'
+        'cache' => './../cache'
     ));
 
     return $pug;

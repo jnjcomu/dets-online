@@ -14,11 +14,21 @@ $app->any('/lectures', function ($request, $response, $args) {
     // 이름 할당
     $this->util->add_option($options);
 
+    $get_option = [
+        'AND' => [
+            'active' => 'ACTIVE'
+        ]
+    ];
+
+    if(isset($_SESSION['userdata'])) {
+        $get_option['AND']['teacher_grade'] = $_SESSION['userdata']['grade'];
+    }
+
     // ACTIVE 처리된 강의만 가져오기
     $lectures = $this->medoo->select(
         'lectures',
         ['idx', 'name', 'teacher_name', 'topic', 'description'],
-        ['active' => 'ACTIVE']
+        $get_option
     );
 
     // 옵션해시에 강의 목록 넣기

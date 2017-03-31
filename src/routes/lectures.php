@@ -35,7 +35,7 @@ $app->any('/lectures', function ($request, $response, $args) {
     $options['lectures'] = $lectures;
 
     return $this->pug->render(__DIR__ . '/../../templates/layouts/lectures_list.pug', $options);
-});
+})->add($logic_check);
 
 
 

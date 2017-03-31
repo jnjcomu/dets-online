@@ -35,7 +35,7 @@ $app->any('/lectures', function ($request, $response, $args) {
     $options['lectures'] = $lectures;
 
     return $this->pug->render(__DIR__ . '/../../templates/layouts/lectures_list.pug', $options);
-})->add($logic_check);
+})->add($login_check);
 
 
 
@@ -77,7 +77,7 @@ $app->get('/lectures/[{lecture}]', function ($request, $response, $args) {
     $this->util->add_option($options);
 
     return $this->pug->render(__DIR__ . '/../../templates/layouts/lectures_detail.pug', $options);
-});
+})->add($login_check);
 
 
 

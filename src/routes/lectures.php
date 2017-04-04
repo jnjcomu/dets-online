@@ -72,7 +72,7 @@ $app->get('/lectures/[{lecture}]', function ($request, $response, $args) {
         'class_time' => $lecture['class_time'],
         'need_thing' => $lecture['need_thing'],
         'max' => $lecture['maximum'],
-        'teacher_image' => 'https://api.dimigo.hs.kr/user_photo/' . $lecture['teacher_picurl'],
+        'teacher_image' => $lecture['teacher_picurl'],
     ];
 
     // 이름 할당

@@ -12,6 +12,13 @@ block contents
         h6.contradiction (#{lecture.now}명 / #{lecture.max}명) 모집
         p.description= lecture.description
         hr
+        .row
+            .six.columns
+                h5 강의 시간
+                p= lecture.class_time
+            .six.columns
+                h5 준비물
+                p= lecture.need_thing
         form(method='post' action=($already) ? '/remove/lecture' : '/lecture')
             input(type="hidden" value="#{lecture.idx}" name="lecture_id")
             if already

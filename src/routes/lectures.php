@@ -69,6 +69,8 @@ $app->get('/lectures/[{lecture}]', function ($request, $response, $args) {
         'teacher_info' => $serial[1] . '반 ' . substr($serial, 2) . '번',
         'description' => $lecture['description'],
         'now' => $student_num,
+        'class_time' => $lecture['class_time'],
+        'need_thing' => $lecture['need_thing'],
         'max' => $lecture['maximum'],
         'teacher_image' => 'https://api.dimigo.hs.kr/user_photo/' . $lecture['teacher_picurl'],
     ];

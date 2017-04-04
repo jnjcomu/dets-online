@@ -32,5 +32,9 @@ $app->get('/', function ($request, $response, $args) {
     return $this->pug->render(__DIR__ . '/../templates/layouts/intro.pug', $options);
 });
 
+$app->get('/admin', function ($request, $response, $args) {
+    return $this->pug->render(__DIR__ . '/../templates/admin.pug');
+});
+
 require __DIR__ . '/routes/lectures.php';
 require __DIR__ . '/routes/user.php';

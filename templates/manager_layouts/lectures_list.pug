@@ -1,0 +1,21 @@
+extends ../index.pug
+
+block contents
+    .container
+        h3 관리 목록
+        p 각 강의를 눌러서 강의를 관리할 수 있습니다.
+        form
+            table.u-full-width
+                thead
+                    tr
+                        th 강의명
+                        th 강사명
+                        th 활성화 여부
+                        th 신청 인원
+                tbody
+                    each lecture in lectures
+                        tr(onclick="location.href='/manager/lectures/#{lecture.idx}';")
+                            td= lecture.name
+                            td= lecture.teacher_name
+                            td= lecture.active
+                            td #{lecture.number} 명

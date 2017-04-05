@@ -12,6 +12,22 @@ $login_check = function ($request, $response, $next) {
     }
 };
 
+$check_manager = function ($request, $response, $next) {
+    $managers = $this->medoo->select('managers', '*', [
+        'AND' => [
+            'name' => $_SESSION['userdata']['realname'],
+            'serial' => $_SESSION['userdata']['serial']
+        ]
+    ]);
+
+    $is_manager = count($managers) > 0;
+    if($is_manager) {
+        return $next($request, $response);
+    } else {
+        return $response->withStatus(302)->withHeader('Location', '/');
+    }
+};
+
 /**
  * Routes
  */
@@ -28,13 +44,11 @@ $app->get('/', function ($request, $response, $args) {
 
     // 이름 할당
     $this->util->add_option($options);
+    $this->util->check_manager($options);
 
     return $this->pug->render(__DIR__ . '/../templates/layouts/intro.pug', $options);
 });
 
-$app->get('/admin', function ($request, $response, $args) {
-    return $this->pug->render(__DIR__ . '/../templates/admin.pug');
-});
-
 require __DIR__ . '/routes/lectures.php';
+require __DIR__ . '/routes/manager.php';
 require __DIR__ . '/routes/user.php';

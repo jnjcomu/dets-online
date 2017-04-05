@@ -12,6 +12,7 @@ $app->get('/teachers/request', function ($request, $response, $args) {
 
     // 이름 할당
     $this->util->add_option($options);
+    $this->util->check_manager($options);
 
     return $this->pug->render(__DIR__ . '/../../templates/layouts/teachers_request.pug', $options);
 })->add($login_check);

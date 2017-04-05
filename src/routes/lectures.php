@@ -13,6 +13,7 @@ $app->any('/lectures', function ($request, $response, $args) {
 
     // 이름 할당
     $this->util->add_option($options);
+    $this->util->check_manager($options);
 
     $get_option = [
         'AND' => [
@@ -20,7 +21,7 @@ $app->any('/lectures', function ($request, $response, $args) {
         ]
     ];
 
-    if(isset($_SESSION['userdata'])) {
+    if (isset($_SESSION['userdata'])) {
         $get_option['AND']['teacher_grade'] = $_SESSION['userdata']['grade'];
     }
 
@@ -38,7 +39,6 @@ $app->any('/lectures', function ($request, $response, $args) {
 })->add($login_check);
 
 
-
 $app->get('/lectures/[{lecture}]', function ($request, $response, $args) {
     $options = [
         'lectures_l' => true,
@@ -48,7 +48,7 @@ $app->get('/lectures/[{lecture}]', function ($request, $response, $args) {
     $lecture = $this->medoo->select('lectures', '*', ['idx' => $args['lecture']])[0];
     $student_num = count($this->medoo->select('students', '*', ['lecture_idx' => $lecture['idx']]));
 
-    if(isset($_SESSION['userdata'])) {
+    if (isset($_SESSION['userdata'])) {
         $is_num = count($this->medoo->select('students', '*', [
             'AND' => [
                 'lecture_idx' => $lecture['idx'],
@@ -57,7 +57,7 @@ $app->get('/lectures/[{lecture}]', function ($request, $response, $args) {
             ]
         ]));
 
-        if($is_num > 0) $options['already'] = true;
+        if ($is_num > 0) $options['already'] = true;
     }
 
     $options['title'] = '디미고 Dets 신청 시스템 :: ' . $lecture['name'];
@@ -77,10 +77,10 @@ $app->get('/lectures/[{lecture}]', function ($request, $response, $args) {
 
     // 이름 할당
     $this->util->add_option($options);
+    $this->util->check_manager($options);
 
     return $this->pug->render(__DIR__ . '/../../templates/layouts/lectures_detail.pug', $options);
 })->add($login_check);
-
 
 
 $app->post('/lecture', function ($request, $response, $args) {
@@ -100,6 +100,7 @@ $app->post('/lecture', function ($request, $response, $args) {
                 'serial' => $_SESSION['userdata']['serial']
             ]
         ])) > 0;
+
     if ($already_apply) {
         $response_message = $this->location->back('이미 신청한 강좌입니다.');
         return $response_message;
@@ -155,6 +156,7 @@ $app->get('/my/lectures', function ($request, $response, $args) {
 
     // 이름 할당
     $this->util->add_option($options);
+    $this->util->check_manager($options);
 
     // 내 강의만 가져오기
     $lectures = $this->medoo->select(

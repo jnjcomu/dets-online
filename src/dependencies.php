@@ -18,13 +18,34 @@ $container['server'] = function ($c) {
 };
 
 $container['util'] = function ($c) {
-    return new class() {
+    return new class($c) {
+        public function __construct($con) {
+            $this->c = $con;
+        }
+
         public function add_option(&$options) {
             if(!isset($_SESSION['userdata'])) return;
 
             $userdata = $_SESSION['userdata'];
             if(isset($userdata['username']) && !empty($userdata['username'])) {
                 $options['username'] = $userdata['realname'];
+            }
+        }
+
+        public function check_manager(&$options) {
+            // 로그인한 유저가 메니저인지 체크
+            if (isset($_SESSION['userdata'])) {
+                $managers = $this->c->medoo->select('managers', '*', [
+                    'AND' => [
+                        'name' => $_SESSION['userdata']['realname'],
+                        'serial' => $_SESSION['userdata']['serial']
+                    ]
+                ]);
+
+                $is_manager = count($managers) > 0;
+                if($is_manager) {
+                    $options['manager'] = $is_manager;
+                }
             }
         }
     };

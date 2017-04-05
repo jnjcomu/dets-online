@@ -116,6 +116,8 @@ nav {
     display: block;
     text-align: center;
     margin: 2.5rem auto 0;
+    width: 128px;
+    height: 128px;
 }
 
 td > button {

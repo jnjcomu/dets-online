@@ -1,0 +1,27 @@
+extends ../index.pug
+
+block contents
+    .container
+        h3= lecture.name
+        h6 #{lecture.teacher_info}의 강의입니다.
+        form.form(method="post", action="/manager/lecture")
+            label 강의 이름
+            input.u-full-width(name='name', type='text', placeholder='', value='#{lecture.name}')
+            .row
+                .three.columns
+                    label 주제
+                    input.u-full-width(name='topic', type='text', placeholder='', value='#{lecture.topic}')
+                .seven.columns
+                    label 강의 시간
+                    input.u-full-width(name='class_time', type='text', placeholder='', value='#{lecture.class_time}')
+                .two.columns
+                    label 최대 인원 수 (희망)
+                    input.u-full-width(name='maximum', type='number', placeholder='최대 30' min='3' max='30', value='#{lecture.maximum}')
+            label 준비물
+            input.u-full-width(name='need_thing', type='text', placeholder='', value='#{lecture.need_thing}')
+            input(name='id' type='hidden' value='#{lecture.idx}')
+            label(for='exampleMessage') 간단 설명
+            textarea#exampleMessage.u-full-width(name='description' placeholder='안녕하세요 ')= lecture.description
+            input.button-primary(type='submit', value='수정')
+            input.button-danger(type='button', value='취소', onclick="history.go(-1);")
+            input.button-danger(type='button', value='강의 삭제', style="float: right;")

@@ -33,19 +33,11 @@ $container['util'] = function ($c) {
         }
 
         public function check_manager(&$options) {
-            // 로그인한 유저가 메니저인지 체크
-            if (isset($_SESSION['userdata'])) {
-                $managers = $this->c->medoo->select('managers', '*', [
-                    'AND' => [
-                        'name' => $_SESSION['userdata']['realname'],
-                        'serial' => $_SESSION['userdata']['serial']
-                    ]
-                ]);
+            if(!isset($_SESSION['userdata'])) return;
 
-                $is_manager = count($managers) > 0;
-                if($is_manager) {
-                    $options['manager'] = $is_manager;
-                }
+            $userdata = $_SESSION['userdata'];
+            if(isset($userdata['manager']) && !empty($userdata['manager'])) {
+                $options['manager'] = true;
             }
         }
     };

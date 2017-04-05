@@ -42,11 +42,10 @@ $app->post('/login', function ($request, $response, $args) {
             // userdata fill
             $_SESSION['userdata']['realname'] = $result->name;
             $_SESSION['userdata']['username'] = $result->username;
-            if($result->photofile2 == '')
+            if ($result->photofile2 == '')
                 $_SESSION['profile_pic'] = $result->photofile1;
             else
                 $_SESSION['profile_pic'] = $result->photofile2;
-
 
             $result_stduent = $this->container->dimigo->fetch_student_info($this, $result->username, new class
             {
@@ -58,6 +57,19 @@ $app->post('/login', function ($request, $response, $args) {
                     $_SESSION['userdata']['number'] = $result->number;
                     $_SESSION['userdata']['serial'] = $result->serial;
 
+                    if (isset($_SESSION['userdata'])) {
+                        $managers = $this->container->medoo->select('managers', '*', [
+                            'AND' => [
+                                'name' => $_SESSION['userdata']['realname'],
+                                'serial' => $_SESSION['userdata']['serial']
+                            ]
+                        ]);
+
+                        $is_manager = count($managers) > 0;
+                        if($is_manager) {
+                            $_SESSION['userdata']['manager'] = $is_manager;
+                        }
+                    }
                 }
 
                 public function onFailed($status, $error_name, $message)

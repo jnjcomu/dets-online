@@ -87,6 +87,7 @@ $app->post('/lecture', function ($request, $response, $args) {
 
     // 유효한 강좌인치 체크
     $lecture_id = $request->getParsedBody()['lecture_id'];
+    $student_number = count($this->medoo->select('students', '*', ['lecture_idx' => $lecture_id]));
     $lecture = $this->medoo->select('lectures', '*', ['idx' => $lecture_id])[0];
     if (!is_numeric($lecture_id) || empty($lecture)) {
         $response_message = $this->location->back('정상적인 강좌 아이디가 아닙니다.');
@@ -103,6 +104,11 @@ $app->post('/lecture', function ($request, $response, $args) {
 
     if ($already_apply) {
         $response_message = $this->location->back('이미 신청한 강좌입니다.');
+        return $response_message;
+    }
+
+    if ($lecture['maximum'] <= $student_number) {
+        $response_message = $this->location->back('더이상 신청할 수 없습니다.');
         return $response_message;
     }
 

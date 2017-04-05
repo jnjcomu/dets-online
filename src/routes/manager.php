@@ -44,7 +44,10 @@ $app->get('/manager/lectures/[{lecture}]', function ($request, $response, $args)
     $lecture = $this->medoo->select('lectures', '*', ['idx' => $args['lecture']])[0];
     $lecture['teacher_info'] = $lecture['teacher_name'] . ' (' . $lecture['teacher_code'] . ')';
 
+    $students = $this->medoo->select('students', '*', ['lecture_idx' => $args['lecture']]);
+
     $options['lecture'] = $lecture;
+    $options['students'] = $students;
 
     return $this->pug->render(__DIR__ . '/../../templates/manager_layouts/lecture_managed.pug', $options);
 })->add($login_check)->add($check_manager);

@@ -56,20 +56,6 @@ $app->post('/login', function ($request, $response, $args) {
                     $_SESSION['userdata']['class'] = $result->class;
                     $_SESSION['userdata']['number'] = $result->number;
                     $_SESSION['userdata']['serial'] = $result->serial;
-
-                    if (isset($_SESSION['userdata'])) {
-                        $managers = $this->container->medoo->select('managers', '*', [
-                            'AND' => [
-                                'name' => $_SESSION['userdata']['realname'],
-                                'serial' => $_SESSION['userdata']['serial']
-                            ]
-                        ]);
-
-                        $is_manager = count($managers) > 0;
-                        if($is_manager) {
-                            $_SESSION['userdata']['manager'] = $is_manager;
-                        }
-                    }
                 }
 
                 public function onFailed($status, $error_name, $message)
@@ -78,6 +64,20 @@ $app->post('/login', function ($request, $response, $args) {
                     $this->container->response->write($response_message);
                 }
             });
+
+            if (isset($_SESSION['userdata'])) {
+                $managers = $this->container->medoo->select('managers', '*', [
+                    'AND' => [
+                        'name' => $_SESSION['userdata']['realname'],
+                        'serial' => $_SESSION['userdata']['serial']
+                    ]
+                ]);
+
+                $is_manager = count($managers) > 0;
+                if($is_manager) {
+                    $_SESSION['userdata']['manager'] = $is_manager;
+                }
+            }
         }
 
         public function onFailed($status, $error_name, $message)

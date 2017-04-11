@@ -1,0 +1,36 @@
+extends ../index.pug
+
+block contents
+    .container
+        h3 강의 추가
+        h6 강의를 추가합니다
+        form.form(method="post", action="/manager/add")
+            label 강의 이름
+            input.u-full-width(name='name', type='text', placeholder='')
+            .row
+                .three.columns
+                    label 주제
+                    input.u-full-width(name='topic', type='text', placeholder='')
+                .seven.columns
+                    label 강의 시간
+                    input.u-full-width(name='class_time', type='text', placeholder='')
+                .two.columns
+                    label 최대 인원 수 (희망)
+                    input.u-full-width(name='maximum', type='number', placeholder='최대 30' min='3' max='30')
+            .row
+                .four.columns
+                    label 선생님 이름
+                    input.u-full-width(name='te_name', type='text', placeholder='')
+                .four.columns
+                    label 선생님 학번
+                    input.u-full-width(name='te_serial', type='text', placeholder='')
+                .four.columns
+                    label 선생님 학년
+                    input.u-full-width(name='te_grade', type='text', placeholder='')
+            label 준비물
+            input.u-full-width(name='need_thing', type='text', placeholder='')
+            input(name='id' type='hidden')
+            label(for='exampleMessage') 간단 설명
+            textarea#exampleMessage.u-full-width(name='description' placeholder='안녕하세요 ')
+
+            input.button-primary(type='submit', value='추가')

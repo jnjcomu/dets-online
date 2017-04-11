@@ -28,42 +28,58 @@ $app->post('/login', function ($request, $response, $args) {
     {
         public function onSuccess($result)
         {
-            if ($result->user_type != 'S') {
-                $response_message = $this->container->location->back('학생 이외의 레벨은 로그인을 지원하지 않습니다.');
-                $this->container->response->write($response_message);
+            // 학생일때 로그인
+            if ($result->user_type == 'S') {
+                // userdata fill
+                $_SESSION['userdata']['realname'] = $result->name;
+                $_SESSION['userdata']['username'] = $result->username;
+                if ($result->photofile2 == '')
+                    $_SESSION['profile_pic'] = $result->photofile1;
+                else
+                    $_SESSION['profile_pic'] = $result->photofile2;
 
-                return;
+                $this->container->dimigo->fetch_student_info($this, $result->username, new class
+                {
+                    public function onSuccess($result)
+                    {
+                        $_SESSION['userdata']['gender'] = $result->gender;
+                        $_SESSION['userdata']['grade'] = $result->grade;
+                        $_SESSION['userdata']['class'] = $result->class;
+                        $_SESSION['userdata']['number'] = $result->number;
+                        $_SESSION['userdata']['serial'] = $result->serial;
+                    }
+
+                    public function onFailed($status, $error_name, $message)
+                    {
+                        $response_message = $this->container->location->back('예상치 못한 오류가 발생했습니다.');
+                        $this->container->response->write($response_message);
+                    }
+                });
+            } else if ($result->user_type == 'T') {
+                $_SESSION['userdata']['realname'] = $result->name;
+                $_SESSION['userdata']['username'] = $result->username;
+                if ($result->photofile2 == '')
+                    $_SESSION['profile_pic'] = $result->photofile1;
+                else
+                    $_SESSION['profile_pic'] = $result->photofile2;
+
+                $this->container->dimigo->fetch_teacher_info($this, $result->username, new class
+                {
+                    public function onSuccess($result)
+                    {
+                        $_SESSION['userdata']['gender'] = $result->gender;
+                        $_SESSION['userdata']['grade'] = '0';
+                        $_SESSION['userdata']['class'] = '0';
+                        $_SESSION['userdata']['number'] = '0';
+                        $_SESSION['userdata']['serial'] = '0000';
+                    }
+
+                    public function onFailed($status, $error_name, $message) {
+                        $response_message = $this->container->location->back('예상치 못한 오류가 발생했습니다.');
+                        $this->container->response->write($response_message);
+                    }
+                });
             }
-
-
-            $response_message = $this->container->location->home();
-            $this->container->response->write($response_message);
-
-            // userdata fill
-            $_SESSION['userdata']['realname'] = $result->name;
-            $_SESSION['userdata']['username'] = $result->username;
-            if ($result->photofile2 == '')
-                $_SESSION['profile_pic'] = $result->photofile1;
-            else
-                $_SESSION['profile_pic'] = $result->photofile2;
-
-            $result_stduent = $this->container->dimigo->fetch_student_info($this, $result->username, new class
-            {
-                public function onSuccess($result)
-                {
-                    $_SESSION['userdata']['gender'] = $result->gender;
-                    $_SESSION['userdata']['grade'] = $result->grade;
-                    $_SESSION['userdata']['class'] = $result->class;
-                    $_SESSION['userdata']['number'] = $result->number;
-                    $_SESSION['userdata']['serial'] = $result->serial;
-                }
-
-                public function onFailed($status, $error_name, $message)
-                {
-                    $response_message = $this->container->location->back('예상치 못한 오류가 발생했습니다.');
-                    $this->container->response->write($response_message);
-                }
-            });
 
             if (isset($_SESSION['userdata'])) {
                 $managers = $this->container->medoo->select('managers', '*', [
@@ -74,10 +90,13 @@ $app->post('/login', function ($request, $response, $args) {
                 ]);
 
                 $is_manager = count($managers) > 0;
-                if($is_manager) {
+                if ($is_manager) {
                     $_SESSION['userdata']['manager'] = $is_manager;
                 }
             }
+
+            $response_message = $this->container->location->home();
+            $this->container->response->write($response_message);
         }
 
         public function onFailed($status, $error_name, $message)

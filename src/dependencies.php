@@ -123,6 +123,38 @@ $container['dimigo'] = function ($c) {
             return $curl;
         }
 
+        public function fetch_teacher_info($container, $username, $callback) {
+            // Check callback has methods
+            $has_methods =
+                method_exists($callback, 'onSuccess') &&
+                method_exists($callback, 'onFailed');
+
+            // methods check
+            if(!$has_methods) {
+                return 'callback doesn\'t has callback methods';
+            } else {
+                $callback->container = $container;
+            }
+
+            $check_username = isset($username) && empty($username);
+            if($check_username) {
+                $callback->onFailed('0', 'NO INFO', 'Does not have info that used login.');
+
+                return 'user info is blink';
+            }
+
+            $curl = $this->curl_ready();
+            $curl->get('http://api.dimigo.org/v1/user-teachers/' . $username);
+
+            $res = $curl->response;
+            if(property_exists($res, 'user_id'))
+                $callback->onSuccess($res);
+            else
+                $callback->onFailed($res->status, $res->name, $res->message);
+
+            return $res;
+        }
+
         public function fetch_student_info($container, $username, $callback) {
             // Check callback has methods
             $has_methods = 

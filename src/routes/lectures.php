@@ -25,6 +25,11 @@ $app->any('/lectures', function ($request, $response, $args) {
         $get_option['AND']['teacher_grade'] = $_SESSION['userdata']['grade'];
     }
 
+    // 교사 계정 처리
+    if (isset($_SESSION['userdata']['grade']) == '0') {
+        unset($get_option['AND']);
+    }
+
     // ACTIVE 처리된 강의만 가져오기
     $lectures = $this->medoo->select(
         'lectures',
@@ -101,6 +106,11 @@ $app->post('/lecture', function ($request, $response, $args) {
                 'serial' => $_SESSION['userdata']['serial']
             ]
         ])) > 0;
+
+    if($lecture['teacher_grade'] != $_SESSION['userdata']['grade']) {
+        $response_message = $this->location->back('다른학년의 강좌는 신청할 수 없습니다.');
+        return $response_message;
+    }
 
     if ($already_apply) {
         $response_message = $this->location->back('이미 신청한 강좌입니다.');

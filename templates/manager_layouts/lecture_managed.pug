@@ -25,7 +25,7 @@ block contents
 
             input.button-primary(type='submit', value='수정')
             input.button-danger(type='button', value='취소', onclick="history.go(-1);")
-            input.button-danger(type='button', value='강의 삭제', style="float: right;" onclick="alert('강의삭제는 지원하지 않습니다.')")
+            input.button-danger(type='button', value='강의 삭제', style="float: right;" onclick="location.href='/manager/lecture/delete/#{lecture.idx}';")
 
         hr
         h4 신청자 목록

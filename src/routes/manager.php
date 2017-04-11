@@ -31,7 +31,6 @@ $app->get('/manager', function ($request, $response, $args) {
 })->add($login_check)->add($check_manager);
 
 
-
 $app->get('/manager/lectures/[{lecture}]', function ($request, $response, $args) {
     $options = [
         'manager_p' => true,
@@ -68,11 +67,43 @@ $app->post('/manager/lecture', function ($request, $response, $args) {
     return $response_message;
 })->add($login_check)->add($check_manager);
 
-$app->get('/manager/lecture/delete', function ($request, $response, $args) {
-    $data = $request->getParsedBody();
+$app->get('/manager/lecture/delete/[{lecture}]', function ($request, $response, $args) {
+    $this->medoo->delete('lectures', ['idx' => $args['lecture']]);
 
-    $this->medoo->delete('lectures', ['idx' => $data['id']]);
-
-    $response_message = $this->location->go('/manager/lectures/' . $data['id'], '삭제가 완료되었습니다.');
+    $response_message = $this->location->go('/manager', '삭제가 완료되었습니다.');
     return $response_message;
 });
+
+$app->get('/manager/add', function ($request, $response, $args) {
+    $options = [
+        'manager_p' => true,
+        'title' => '디미고 Dets 신청 시스템 :: 관리자',
+    ];
+
+    // 이름 할당
+    $this->util->add_option($options);
+    $this->util->check_manager($options);
+
+    return $this->pug->render(__DIR__ . '/../../templates/manager_layouts/lecture_add.pug', $options);
+})->add($login_check)->add($check_manager);
+
+$app->post('/manager/add', function ($request, $response, $args) {
+    $data = $request->getParsedBody();
+
+    $this->medoo->insert('lectures', [
+        'name' => $data['name'],
+        'description' => $data['description'],
+        'maximum' => $data['maximum'],
+        'topic' => $data['topic'],
+        'active' => 'ACTIVE',
+        'class_time' => $data['class_time'],
+        'need_thing' => $data['need_thing'],
+        'teacher_picurl' => 'http://dets.dimigo.in/images/dimigo-logo.png',
+        'teacher_grade' => $data['te_grade'],
+        'teacher_code' => $data['te_serial'],
+        'teacher_name' => $data['te_name']
+    ]);
+
+    $response_message = $this->location->go('/manager', '생성이 완료되었습니다.');
+    return $response_message;
+})->add($login_check)->add($check_manager);

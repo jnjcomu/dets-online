@@ -26,6 +26,7 @@ $app->get('/manager', function ($request, $response, $args) {
     }
 
     $options['lectures'] = $cleaning_lectures;
+    $options['admins'] = $this->medoo->select('managers', '*');
 
     return $this->pug->render(__DIR__ . '/../../templates/manager_layouts/lectures_list.pug', $options);
 })->add($login_check)->add($check_manager);
@@ -107,3 +108,34 @@ $app->post('/manager/add', function ($request, $response, $args) {
     $response_message = $this->location->go('/manager', '생성이 완료되었습니다.');
     return $response_message;
 })->add($login_check)->add($check_manager);
+
+$app->get('/manager/admins/add', function ($req, $res, $args) {
+    $options = [
+        'manager_p' => true,
+        'title' => '디미고 Dets 신청 시스템 :: 관리자',
+    ];
+
+    $this->util->add_option($options);
+    $this->util->check_manager($options);
+
+    return $this->pug->render(__DIR__ . '/../../templates/manager_layouts/admin_add.pug', $options);
+})->add($login_check)->add($check_manager);
+
+$app->post('/manager/admins/add', function($req, $res, $args) {
+    $data = $req->getParsedBody();
+
+    $this->medoo->insert('managers', [
+        'name' => $data['name'],
+        'serial' => $data['serial']
+    ]);
+
+    $response_message = $this->location->go('/manager', '추가가 완료되었습니다.');
+    return $response_message;
+})->add($login_check)->add($check_manager);
+
+$app->get('/manager/admins/delete/[{admin}]', function ($request, $response, $args) {
+    $this->medoo->delete('managers', ['idx' => $args['admin']]);
+
+    $response_message = $this->location->go('/manager', '제명이 완료되었습니다.');
+    return $response_message;
+});

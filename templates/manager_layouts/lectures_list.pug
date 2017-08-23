@@ -21,3 +21,25 @@ block contents
                             td #{lecture.number} 명 / #{lecture.maximum} 명
 
         button.button-primary(style="float: right;", onclick="location.href='/manager/add';") 강의 추가
+
+        h3 관리자 목록
+        p 관리자를 눌러서 관리자에서 제명할 수 있습니다.
+        form
+          table.u-full-width
+            thead
+              tr
+                th 이름
+                th 학번
+                th 타입
+            tbody
+              each admin in admins
+                tr(onclick="location.href='/manager/admins/delete/#{admin.idx}';")
+                  td= admin.name
+                  td= admin.serial
+                  td
+                    if admin.serial == '0000'
+                      선생님
+                    else
+                      학생
+
+        button.button-primary(style="float: right;", onclick="location.href='/manager/admins/add';") 관리자 추가

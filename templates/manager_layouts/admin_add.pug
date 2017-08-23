@@ -7,10 +7,10 @@ block contents
         form.form(method="post", action="/manager/admins/add")
             .row
                 .six.columns
-                    label 관리자 추가
+                    label 이름
                     input.u-full-width(name='name', type='text', placeholder='')
                 .six.columns
-                    label 관리자 학번 (선생님은 0000으로)
+                    label 학번 (선생님은 0000으로)
                     input.u-full-width(name='serial', type='text', placeholder='')
 
             input.button-primary(type='submit', value='추가')

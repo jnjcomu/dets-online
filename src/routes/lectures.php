@@ -196,3 +196,4 @@ $app->get('/my/lectures', function ($request, $response, $args) {
 
     return $this->pug->render(__DIR__ . '/../../templates/layouts/my_lectures.pug', $options);
 })->add($login_check);
+
